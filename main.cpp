@@ -5,9 +5,8 @@
 #include <time.h>
 #include "container_class.hpp"
 
-#define N 100
+#define N 30
 #define S 15
-
 
 
 int main(int argc, char **argv) {
@@ -40,9 +39,9 @@ int main(int argc, char **argv) {
         ss2 >> cont_sizes[i];
         */
     for (int i = 0; i < N; i++)
-        items[i] = rand() % 10 + 1;
+        items[i] = rand() % 15 + 1;
     for (int i = 0; i < S; i++)
-        cont_sizes[i] = rand() % 200 + 20;
+        cont_sizes[i] = rand() % 50 + 50;
 
     printf("Jadniy algorithm: %lf\n", jadno);
 
