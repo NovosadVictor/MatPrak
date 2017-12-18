@@ -1,0 +1,12 @@
+Result of 1 algorithm		1
+Executing time			0.00979
+
+
+Result of 0.9995 algorithm	0.833333
+Executing time			0.024984
+
+Result of 0.9994 algorithm	0.777778
+Executing time			0.12058
+
+Result of 0.9993 algorithm	0.722222
+Executing time			0.844275

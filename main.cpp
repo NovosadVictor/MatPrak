@@ -1,60 +1,70 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <stdlib.h>
 #include <time.h>
 #include "container_class.hpp"
 
-#define N 30
-#define S 15
+#define S 18
 
 
 int main(int argc, char **argv) {
-    if (argc < 2) {
-        printf("\nPlease, write filename\n");
-        return -1;
-    }
 
-    double jadno = 1.0;
-    if (argc == 3)
-        jadno = atof(argv[2]);
+    std::ofstream file("result.txt");
 
-    std::ifstream file(argv[1]);
+    int N;
+    printf("\nWrite number of items\n");
+    std::cin >> N;
 
     std::vector<int> items(N);
     std::vector<int> cont_sizes (S);
 
- /*   std::string s;
-    std::stringstream ss1;
-    std::stringstream ss2;
-
-    std::getline(file, s);
-    ss1 << s;
     for (int i = 0; i < N; i++)
-        ss1 >> items[i];
+        items[i] = rand() % 3 + 10000;
 
-    std::getline(file, s);
-    ss2 << s;
-    for (int i = 0; i < S; i++)
-        ss2 >> cont_sizes[i];
-        */
-    for (int i = 0; i < N; i++)
-        items[i] = rand() % 15 + 1;
-    for (int i = 0; i < S; i++)
-        cont_sizes[i] = rand() % 50 + 50;
+    for (int i = 0; i < S - 14; i++)
+        cont_sizes[i] = rand() % 100 + (int(((N - 10) / 8.0)) * 10003);
+    for (int i = S - 14; i < S - 10; i++)
+        cont_sizes[i] = rand() % 100 + (int(((N - 10) / 8.0) + 0.5) * 10003);
+    for (int i = 0; i < 9; i++)
+        cont_sizes[S - 10 + i] = rand() % 5 + 10002;
+    cont_sizes[S - 1] = 10000000;
 
-    printf("Jadniy algorithm: %lf\n", jadno);
+    std::vector<double> procents(6);
 
-    time_t start = clock();
+    procents[0] = 1;
+    procents[1] = 1.0 - 5.0 / N;
+    procents[2] = 1.0 - 6.0 / N;
+    procents[3] = 1.0 - 7.0 / N;
+    procents[4] = 1.0 - 8.0 / N;
+    procents[5] = 1.0 - 9.0 / N;
 
-    Container container(items, cont_sizes);
-    double result = container.sort_items(jadno);
+    double jadniy;
+    for (int i = 0; i < procents.size() - 2; i++) {
+        printf("Beginning of %lf algorithm\n", procents[i]);
 
-    time_t end = clock();
+        time_t start = clock();
 
-    printf("Result: %lf\n", result);
+        Container container(items, cont_sizes);
+        double result = container.sort_items(procents[i]);
 
-    printf("\nExecuting time: %lf\n", (double)(end - start) / CLOCKS_PER_SEC);
+        time_t end = clock();
+
+        printf("Result: %lf\n", result);
+        file << "Result of " << procents[i] << " algorithm\t" << result << "\n";
+
+        printf("\nExecuting time: %lf\n", ((double) (end - start) / CLOCKS_PER_SEC));
+        file << "Executing time\t\t\t" << ((double) (end - start) / CLOCKS_PER_SEC) << "\n";
+        if (i == 0) {
+            jadniy = ((double) (end - start) / CLOCKS_PER_SEC);
+            file << "\n\n\n";
+        }
+        else {
+   //         printf("Time of current vs jadniy time = %lf\n", ((double) (end - start) / CLOCKS_PER_SEC) / jadniy);
+    //        file << "Time of current vs jadniy time\t" << ((double) (end - start) / CLOCKS_PER_SEC) / jadniy << "\n\n\n\n";
+        }
+    }
+
     file.close();
+
     return 0;
 }
